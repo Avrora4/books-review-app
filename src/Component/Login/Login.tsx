@@ -1,5 +1,6 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-import './Login.scss';
+import React, { useState, ChangeEvent, FormEvent } from "react";
+import "./Login.scss";
+import { Header } from "../Common/Header"; 
 
 export const Login = () => {
     const [email, setEmail] = useState<string>('');
@@ -30,7 +31,9 @@ export const Login = () => {
     };
 
     return (
-        <div>
+        <>
+        <Header />
+        <div className="LoginFrom">
             <h1>Login</h1>
             <form onSubmit={handleSubmit}>
                 <div>
@@ -46,6 +49,7 @@ export const Login = () => {
                 <button type="submit">Login</button>
             </form>
         </div>
+        </>
     );
 };
 
