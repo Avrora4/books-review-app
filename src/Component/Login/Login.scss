@@ -1,0 +1,63 @@
+.LoginFrom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #11b8cb, #00158d); // グラデーション背景
+  
+    form {
+      width: 350px;
+      padding: 3rem;
+      background-color: rgba(255, 255, 255, 0.9); // 半透明の背景
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  
+      h1 {
+        text-align: center;
+        margin-bottom: 2.5rem;
+        color: cyan;
+      }
+  
+      div {
+        margin-bottom: 1.5rem;
+  
+        label {
+          display: block;
+          margin-bottom: 0.8rem;
+          color: #444;
+          font-weight: 500;
+        }
+  
+        input {
+          width: 100%;
+          padding: 1rem;
+          border: 1px solid #ccc;
+          border-radius: 6px;
+          box-sizing: border-box;
+          font-size: 1rem;
+        }
+  
+        p {
+          margin-top: 0.5rem;
+          color: red;
+          font-size: 0.9rem;
+        }
+      }
+  
+      button {
+        width: 100%;
+        padding: 1.2rem;
+        background-color: #6a11cb;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        transition: background-color 0.3s;
+  
+        &:hover {
+          background-color: #550bb2;
+        }
+      }
+    }
+  }
