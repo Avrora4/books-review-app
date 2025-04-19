@@ -1,13 +1,30 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Login } from './Component/Login/Login';
+import { useEffect } from "react";
+import { CookiesProvider, useCookies } from "react-cookie";
+import { useDispatch, useSelector } from "react-redux";
+import "./App.scss";
+import { Router } from "./routes/router";
+import { signIn, signOut } from "./authSlice";
+import { RootState } from "./store";
 
-export const App = () => {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </Router>
-  );
+
+export default function App() {
+    const [cookies] = useCookies<string>(['authToken']);
+    const dispatch = useDispatch();
+    const auth = useSelector((state: RootState) => state.auth.isSignIn);
+
+    useEffect (() => {
+        console.log("Checking auth token in cookie...");
+        if(cookies.authToken && !auth) {
+            dispatch(signIn());
+        } else if (!cookies.authToken && auth) {
+            dispatch(signOut());
+        }
+    }, [cookies.authToken, dispatch, auth])
+    return (
+        <div className='App'>
+            <CookiesProvider>
+                <Router />
+            </CookiesProvider>
+        </div>
+    );
 };
