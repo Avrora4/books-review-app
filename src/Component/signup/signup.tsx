@@ -42,7 +42,7 @@ export const Signup = () => {
             password: userValues.password,
         };
 
-        const iconFormData: iconUploadRequest = {icon: null};
+        const iconFormData: iconUploadRequest = {token: '', icon: null};
         if (iconValue.icon !== null) {
             iconFormData.icon = iconValue.icon;
         }
@@ -80,8 +80,8 @@ export const Signup = () => {
                         email: values.email,
                         password: values.password,
                     };
-                    const iconValue : {icon: File | null } = { icon: values.icon};
-                    onSignup(userValues,iconValue);
+                    const iconValues : iconUploadRequest = { token: '', icon: values.icon };
+                    onSignup(userValues,iconValues);
                     setSubmitting(false);
                 }}
             >
