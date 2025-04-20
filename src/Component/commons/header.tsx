@@ -1,7 +1,6 @@
-import React from "react";
 import { useCookies } from "react-cookie";
-import { useSelector, useDispatch } from "react-redux/es/exports";
-import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { signOut } from "../../authSlice";
 import { RootState } from "../../store";
 import "./Header.scss";
@@ -10,29 +9,30 @@ export const Header = () => {
     const auth = useSelector((state: RootState) => state.auth.isSignIn);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [cookies, setCookie, removeCookie] = useCookies();
-    const handleSignOut = () => {
+    const [, , removeCookie] = useCookies();
+    const handleLogout = () => {
+        removeCookie('authToken', { path: '/' });
         dispatch(signOut());
-        removeCookie("token");
-        navigate("/sighin")
+        navigate("/login")
     };
-
-    const handleLogin = () => {
-        navigate("/login");
-    }
 
     return (
         <header className='header'>
-            <h1>Books-Review</h1>
-            {auth ? (
-                <button onClick={handleSignOut} className='sign-out-button'>
-                    SignOut
-                </button>
-            ) : (
-                <button onClick={handleLogin} className='login-button'>
-                    Login
-                </button>
-            )}
+            <nav>
+                <ul>
+                    <li><Link to='/home'>Home</Link></li>
+                    {auth ? (
+                        <>
+                        <li><button onClick={handleLogout}>Logout</button></li>
+                        </>
+                    ) : (
+                        <>
+                        <li><Link to='/login'>Login</Link></li>
+                        <li><Link to='/signup'>Signup</Link></li>
+                        </>
+                    )}
+                </ul>
+            </nav>
         </header>
     );
 };
