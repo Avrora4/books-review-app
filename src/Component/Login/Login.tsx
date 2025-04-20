@@ -1,7 +1,3 @@
-<<<<<<< Updated upstream
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-import './Login.scss';
-=======
 import { useState } from "react";
 import "./Login.scss";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +6,6 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { loginRequest } from "../../model/user/loginModels";
 import { loginAPI } from "../../services/user/userService";
 // import { Header } from "../common/header"; 
->>>>>>> Stashed changes
 
 export const Login = () => {
     const navigate = useNavigate();
@@ -43,12 +38,7 @@ export const Login = () => {
     };
 
     return (
-<<<<<<< Updated upstream
-        <div>
-=======
-        <>
         <div className="LoginFrom">
->>>>>>> Stashed changes
             <h1>Login</h1>
             {errorMessage && <p style={{ color: 'red'}}>{errorMessage}</p>}
             <Formik
@@ -78,6 +68,7 @@ export const Login = () => {
                 </Form>
             </Formik>
         </div>
+        </>
     );
 };
 
