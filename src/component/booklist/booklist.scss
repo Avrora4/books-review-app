@@ -1,0 +1,95 @@
+$primary-color: #007bff;
+$secondary-color: navy;
+$success-color: turquoise;
+$danger-color: red;
+$border-color: #e0e0e0;
+$card-bg-color: white;
+$text-color: orange;
+$font-family: sans-serif;
+
+// BookList コンテナのスタイル
+.booklistBox {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 0 15px;
+  font-family: $font-family;
+  color: $text-color;
+}
+
+.loadingMessage {
+    text-align: center;
+    color: $secondary-color;
+    padding: 20px 0;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.errorMessage {
+    background-color: lighten($danger-color, 40%);
+    color: darken($danger-color, 20%);
+    border: 1px solid lighten($danger-color, 20%);
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 20px;
+
+    p {
+        margin: 0;
+        &:first-child {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+    }
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    &:last-child {
+        margin-bottom: 0;
+    }
+    .booklistItem & {
+        text-align: center;
+        color: $secondary-color;
+        padding: 20px 0;
+        margin-bottom: 0;
+    }
+}
+
+.no-reviews-message { // BookList.tsx の li にクラスを付けるか、li:last-child などで指定
+    text-align: center; // text-center と合わせる
+    color: $secondary-color; // 落ち着いた色 (text-gray-500 と合わせる)
+    padding: 20px 0; // 上下の余白 (py-6 と合わせる)
+}
+
+
+.PreviousButton, .NextButton {
+    display: flex;
+    margin-top: 20px;
+    float: left;
+    float: right;
+    &::after { content: ""; display: block; clear: both; } // float 解除
+}
+
+
+.booklistBox button {
+    background-color: $primary-color;
+    color: $text-color;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 0 5px;
+    transition: background-color 0.2s ease-in-out;
+  
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  
+    &:disabled {
+      background-color: lighten($primary-color, 20%);
+      cursor: not-allowed;
+    }
+  }

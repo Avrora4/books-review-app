@@ -8,8 +8,6 @@ import { loginAPI } from "../../services/user/userService";
 import { useCookies } from "react-cookie";
 import { useDispatch } from "react-redux";
 import { signIn } from "../../authSlice";
-// import { getLoginInfoAPI } from "../../services/user/userService";
-// import { getLoginInfoRequest } from "../../model/user/editModels";
 
 export const Login = () => {
     const navigate = useNavigate();
@@ -37,14 +35,6 @@ export const Login = () => {
             if(loginResponse && typeof loginResponse === "object" && "token" in loginResponse && loginResponse.token) {
                 setTokenCookie('authToken', loginResponse.token, { path: '/', expires: new Date(Date.now() + 86400 * 1000)});
                 setIconCookie('iconUrl', loginResponse.iconUrl, { path: '/', expires: new Date(Date.now() + 86400 * 1000)})
-                // const loginInfoReequestData: getLoginInfoRequest = {
-                //    token: loginResponse.token
-                // };
-
-                // const getLoginInfoResponse = await getLoginInfoAPI(loginInfoReequestData);
-                // if (getLoginInfoResponse && typeof getLoginInfoResponse === "object" && "name" in getLoginInfoResponse && getLoginInfoResponse.name) {
-                //     setNameCookie('userName',getLoginInfoResponse.name, { path: '/', expires: new Date(Date.now() + 86400 * 1000)});
-                // }
                 dispatch(signIn);
                 navigate('/home');
             } else {
