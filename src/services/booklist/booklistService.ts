@@ -7,11 +7,11 @@ const API_BASE_URL = `${apiUrl}`;
 
 export const booklistAPI  = async (booklistRequestData: booklistRequest) : Promise<booklistApiResponse> => {
     const response = await axios.get(
-        `${API_BASE_URL}/public/books?offset=${booklistRequestData.offset}`,
+        `${API_BASE_URL}/books?offset=${booklistRequestData.offset}`,
         {
         method: 'GET',
         headers: {
-          // "Authorization": booklistRequestData.token,
+          "Authorization": booklistRequestData.token,
           'Content-Type': 'application/json',
         },
     });

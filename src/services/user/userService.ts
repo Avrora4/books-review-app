@@ -3,8 +3,9 @@ import { apiUrl } from "../../const";
 import { signupUserApiResponse, signupUserRequest, signupUserSuccessResponse, iconUploadApiResponse, iconUploadRequest, iconUploadSuccessResponse } from "../../model/user/signupModels";
 import { loginApiResponse, loginRequest, loginSuccessResponse } from "../../model/user/loginModels";
 import { errorResponse } from "../../model/errorModel";
+import { getLoginInfoApiResponse, getLoginInfoRequest, getLoginInfoResponse } from "../../model/user/editModels";
 
-const API_BASE_URL = `${apiUrl}`
+const API_BASE_URL = `${apiUrl}`;
 
 export const signupUserAPI  = async (userData: signupUserRequest) : Promise<signupUserApiResponse> => {
     const response = await axios.post<signupUserApiResponse>(
@@ -20,15 +21,16 @@ export const signupUserAPI  = async (userData: signupUserRequest) : Promise<sign
     } else {
         return response.data as errorResponse;
     }
-}
+};
 
 export const iconUploadAPI = async (iconData: iconUploadRequest) : Promise<iconUploadApiResponse> => {
     const response = await axios.post<iconUploadApiResponse>(
-        `${API_BASE_URL}/users`,
-        iconData,
+        `${API_BASE_URL}/uploads`,
+        iconData.icon,
         {
         headers: {
-            'Content-Type': 'application/json', 
+            'Content-Type': 'application/json',
+            'Authorization': `${iconData.token}`,
         },
     });
     if (response.status === 200 ) {
@@ -36,7 +38,7 @@ export const iconUploadAPI = async (iconData: iconUploadRequest) : Promise<iconU
     } else {
         return response.data as errorResponse;
     }
-}
+};
 
 export const loginAPI = async (loginData: loginRequest) : Promise<loginApiResponse> => {
     const response = await axios.post<loginApiResponse>(
@@ -52,4 +54,21 @@ export const loginAPI = async (loginData: loginRequest) : Promise<loginApiRespon
     } else {
         return response.data as errorResponse;
     } 
-}
+};
+
+export const getLoginInfoAPI = async (getLoginInfoData: getLoginInfoRequest) : Promise<getLoginInfoApiResponse> => {
+    const response = await axios.get<getLoginInfoApiResponse>(
+        `${API_BASE_URL}/users`,
+        {
+            method: 'GET',
+            headers: {
+                'Authorization': getLoginInfoData.token,
+                'Content-Type': 'application/json',
+            },
+    });
+    if (response.status === 200 ) {
+        return response.data as getLoginInfoResponse;
+    } else {
+        return response.data as errorResponse;
+    } 
+};

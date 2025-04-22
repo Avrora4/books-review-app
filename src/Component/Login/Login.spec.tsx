@@ -1,30 +1,47 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { Login } from "./login";
-import "@testing-library/jest-dom";
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { Login } from './login';
+import '@testing-library/jest-dom';
 
 describe('Login Component', () => {
-  it('renders login form', () => {
-    render(<Login />);
-    expect(screen.getByRole('heading', { name: /login/i })).toBeInTheDocument();
-    expect(screen.getByLabelText(/email:/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/password:/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /login/i })).toBeInTheDocument();
-  });
+    beforeEach(() => {
+        render(<Login />)
+    });
 
-  it('displays error messages when form is submitted with empty fields', async () => {
-    render(<Login />);
-    await userEvent.click(screen.getByRole('button', { name: /login/i }));
-    expect(screen.getByText(/Please Input Email or correct Email/i)).toBeInTheDocument();
-    expect(screen.getByText(/Please Input Password/i)).toBeInTheDocument();
-  });
+    it('Rendering Test', () => {
+        expect(screen.getByLabelText(/Email:/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/Password:/i)).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Login/i })).toBeInTheDocument();
+    });
 
-  it('updates email and password input values', async () => {
-    render(<Login />);
-    await userEvent.type(screen.getByLabelText(/email:/i), 'test@example.com');
-    expect(screen.getByLabelText(/email:/i)).toHaveValue('test@example.com');
-    await userEvent.type(screen.getByLabelText(/password:/i), 'password123');
-    expect(screen.getByLabelText(/password:/i)).toHaveValue('password123');
-  });
+    it('Email and Password Test', async() => {
+        const user = userEvent.setup();
+
+        await user.type(screen.getByLabelText(/Email:/i), 'test@example.com');
+        expect(screen.getByLabelText(/Email:/i)).toHaveValue('test@example.com');
+
+        await user.type(screen.getByLabelText(/Password:/i), 'password');
+        expect(screen.getByLabelText(/Password:/i)).toHaveValue('password');
+
+        });
+    it('フォーム送信時にエラーメッセージが表示されること', async () => {
+        const user = userEvent.setup();
+    
+        await user.click(screen.getByRole('button', { name: /Login/i }));
+    
+        expect(await screen.findByText(/Please Input Email or correct Email/i)).toBeInTheDocument();
+        expect(await screen.findByText(/Please Input Password/i)).toBeInTheDocument();
+    
+        await user.type(screen.getByLabelText(/Email:/i), 'test@example.com');
+        await user.click(screen.getByRole('button', { name: /Login/i }));
+    
+        expect(screen.queryByText(/Please Input Email or correct Email/i)).not.toBeInTheDocument();
+        expect(await screen.findByText(/Please Input Password/i)).toBeInTheDocument();
+    
+        await user.type(screen.getByLabelText(/Password:/i), 'password');
+        await user.click(screen.getByRole('button', { name: /Login/i }));
+    
+        expect(screen.queryByText(/Please Input Email or correct Email/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/Please Input Password/i)).not.toBeInTheDocument();
+        });
 });

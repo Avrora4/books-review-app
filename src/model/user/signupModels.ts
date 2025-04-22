@@ -1,7 +1,7 @@
 import { errorResponse } from "../errorModel";
 
 export interface signupUserSuccessResponse {
-  token: string
+  token: string;
   }
 
 export interface signupUserRequest {
@@ -13,11 +13,12 @@ export interface signupUserRequest {
 export type signupUserApiResponse = signupUserSuccessResponse | errorResponse;
 
 export interface iconUploadSuccessResponse {
-  iconUrl: string
+  iconUrl: string;
 }
 
 export interface iconUploadRequest {
-  icon: File | null
+  token: string;
+  icon: File | null;
 }
 
 export type iconUploadApiResponse = iconUploadSuccessResponse | errorResponse;
