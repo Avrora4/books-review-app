@@ -24,7 +24,7 @@ export const BookList = () => {
         // Call API
         try {
             const booklistRequestData: booklistRequest = {
-                token: `Bearer ${cookies.token}`,
+                token: `Bearer ${cookies.authToken}`,
                 offset: String(offset),
             }
             const response = await booklistAPI(booklistRequestData);
@@ -40,7 +40,7 @@ export const BookList = () => {
         }
     }
     getBooklist();
-    },[offset, cookies.token]);
+    },[offset, cookies.authToken]);
 
     const nextOffset = async() => {
         try {
@@ -58,36 +58,28 @@ export const BookList = () => {
         }
     }
 
-
-  // --- レンダリング ---
   return (
-    // コンポーネントのルート要素 (クラス名はお好みで)
-    <div className="book-list-wrapper mt-6">
-
-      {/* ローディング表示 */}
+    <div className="booklistBox">
       {isLoading && (
-        <div className="flex justify-center items-center py-8">
-          {/* 簡単なテキスト表示、またはスピナーコンポーネントなど */}
-          <p className="text-base text-gray-500">レビューを読み込んでいます...</p>
+        <div className="loadingMessage">
+          <p>Now Loading</p>
         </div>
       )}
 
-      {/* エラー表示 */}
       {error && (
-        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
-          <p className="font-bold">エラー</p>
+        <div className="errorMessage" role="alert">
+          <p>Error</p>
           <p>{error}</p>
         </div>
       )}
+
       <div className="booklistItem">
-        {/* データ表示 (ローディング中でなく、エラーもない場合) */}
         {!isLoading && !error && booklist && (
-            <ul className="space-y-5"> {/* リストアイテム間のスペース */}
+            <ul>
             {booklist.length > 0 ? (
                 <BooklistItem response={booklist} offset={offset} />
                 ) : (
-                // レビューが存在しない場合
-                <li className="text-center text-gray-500 py-6">
+                <li>
                     No book review.
                 </li>
             )}

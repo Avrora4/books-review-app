@@ -6,11 +6,18 @@ import Compressor from "compressorjs";
 import "./Signup.scss"
 import { signupUserRequest, iconUploadRequest } from "../../model/user/signupModels.ts";
 import { iconUploadAPI, signupUserAPI } from "../../services/user/userService.ts";
+import { useCookies } from "react-cookie";
+import { useDispatch } from "react-redux";
+import { signIn } from "../../authSlice.ts";
 
 
 export const Signup = () => {
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState<string>('');
+    const [, setTokenCookie] = useCookies(['authToken']);
+    const [, setIconCookie] = useCookies(['iconUrl']);
+    const [, setNameCookie] = useCookies(['userName']);
+    const dispatch = useDispatch();
 
     const validationSchema = Yup.object().shape({
         name: Yup.string().required('Please input your name'),
@@ -51,13 +58,17 @@ export const Signup = () => {
         try {
             const signupResponse = await signupUserAPI(userFormData);
 
-            if("token" in signupResponse) {
-                navigate('/login');
-
+            if(signupResponse && typeof signupResponse === "object" && "token" in signupResponse && signupResponse.token) {
+                setTokenCookie('authToken', signupResponse.token, { path: '/', expires: new Date(Date.now() + 86400 * 1000)});
+                setNameCookie('userName', userFormData.name, { path: '/', expires: new Date(Date.now() + 86400 * 1000)});
+                dispatch(signIn);
                 if (iconValue.icon) {
                     const iconResponse = await iconUploadAPI(iconFormData);
-                    console.log("Icon upload response: ", iconResponse);
+                    if(iconResponse && typeof iconResponse === "object" && "iconUrl" in iconResponse && iconResponse.iconUrl) {
+                        setIconCookie('iconUrl', iconResponse.iconUrl, { path: '/', expires: new Date(Date.now() + 86400 * 1000)});
+                    }
                 }
+                navigate('/home');
             } else {
                 setErrorMessage(`Signup Failed\n ErrorMessages: ${signupResponse}`);
             }

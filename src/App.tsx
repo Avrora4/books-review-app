@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { CookiesProvider, useCookies } from "react-cookie";
+import { useCookies } from "react-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import "./App.scss";
 import { Router } from "./routes/router";
@@ -22,9 +22,7 @@ export default function App() {
     }, [cookies.authToken, dispatch, auth])
     return (
         <div className='App'>
-            <CookiesProvider>
-                <Router />
-            </CookiesProvider>
+            <Router />
         </div>
     );
 };

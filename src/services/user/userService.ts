@@ -3,6 +3,7 @@ import { apiUrl } from "../../const";
 import { signupUserApiResponse, signupUserRequest, signupUserSuccessResponse, iconUploadApiResponse, iconUploadRequest, iconUploadSuccessResponse } from "../../model/user/signupModels";
 import { loginApiResponse, loginRequest, loginSuccessResponse } from "../../model/user/loginModels";
 import { errorResponse } from "../../model/errorModel";
+import { getLoginInfoApiResponse, getLoginInfoRequest, getLoginInfoResponse } from "../../model/user/editModels";
 
 const API_BASE_URL = `${apiUrl}`;
 
@@ -50,6 +51,23 @@ export const loginAPI = async (loginData: loginRequest) : Promise<loginApiRespon
     });
     if (response.status === 200 ) {
         return response.data as loginSuccessResponse;
+    } else {
+        return response.data as errorResponse;
+    } 
+};
+
+export const getLoginInfoAPI = async (getLoginInfoData: getLoginInfoRequest) : Promise<getLoginInfoApiResponse> => {
+    const response = await axios.get<getLoginInfoApiResponse>(
+        `${API_BASE_URL}/users`,
+        {
+            method: 'GET',
+            headers: {
+                'Authorization': getLoginInfoData.token,
+                'Content-Type': 'application/json',
+            },
+    });
+    if (response.status === 200 ) {
+        return response.data as getLoginInfoResponse;
     } else {
         return response.data as errorResponse;
     } 

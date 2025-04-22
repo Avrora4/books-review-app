@@ -5,11 +5,19 @@ import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { loginRequest } from "../../model/user/loginModels";
 import { loginAPI } from "../../services/user/userService";
-// import { Header } from "../common/header"; 
+import { useCookies } from "react-cookie";
+import { useDispatch } from "react-redux";
+import { signIn } from "../../authSlice";
+// import { getLoginInfoAPI } from "../../services/user/userService";
+// import { getLoginInfoRequest } from "../../model/user/editModels";
 
 export const Login = () => {
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState<string>('');
+    const [, setTokenCookie] = useCookies(['authToken']);
+    const [, setIconCookie] = useCookies(['iconUrl']);
+    // const [, setNameCookie] = useCookies(['userName']);
+    const dispatch = useDispatch();
 
 
     const validationSchema = Yup.object().shape({
@@ -26,8 +34,18 @@ export const Login = () => {
         try {
             const loginResponse = await loginAPI(loginFormData);
 
-            if ( "token" in loginResponse) {
-                localStorage.setItem('authToken', loginResponse.token);
+            if(loginResponse && typeof loginResponse === "object" && "token" in loginResponse && loginResponse.token) {
+                setTokenCookie('authToken', loginResponse.token, { path: '/', expires: new Date(Date.now() + 86400 * 1000)});
+                setIconCookie('iconUrl', loginResponse.iconUrl, { path: '/', expires: new Date(Date.now() + 86400 * 1000)})
+                // const loginInfoReequestData: getLoginInfoRequest = {
+                //    token: loginResponse.token
+                // };
+
+                // const getLoginInfoResponse = await getLoginInfoAPI(loginInfoReequestData);
+                // if (getLoginInfoResponse && typeof getLoginInfoResponse === "object" && "name" in getLoginInfoResponse && getLoginInfoResponse.name) {
+                //     setNameCookie('userName',getLoginInfoResponse.name, { path: '/', expires: new Date(Date.now() + 86400 * 1000)});
+                // }
+                dispatch(signIn);
                 navigate('/home');
             } else {
                 setErrorMessage(`Login Fiald\n ErrorMessages: ${loginResponse}`);
@@ -68,7 +86,6 @@ export const Login = () => {
                 </Form>
             </Formik>
         </div>
-        </>
     );
 };
 
