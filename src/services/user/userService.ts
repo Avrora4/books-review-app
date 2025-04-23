@@ -17,6 +17,7 @@ export const signupUserAPI  = async (userData: signupUserRequest) : Promise<sign
         },
     });
     if (response.status === 200 ) {
+        console.log(response.data);
         return response.data as signupUserSuccessResponse;
     } else {
         return response.data as errorResponse;
@@ -24,13 +25,17 @@ export const signupUserAPI  = async (userData: signupUserRequest) : Promise<sign
 };
 
 export const iconUploadAPI = async (iconData: iconUploadRequest) : Promise<iconUploadApiResponse> => {
+    const formData = new FormData();
+    if (iconData.icon) {
+        formData.append('icon', iconData.icon, iconData.icon.name);
+    }
     const response = await axios.post<iconUploadApiResponse>(
         `${API_BASE_URL}/uploads`,
-        iconData.icon,
+        formData,
         {
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `${iconData.token}`,
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${iconData.token}`,
         },
     });
     if (response.status === 200 ) {

@@ -18,7 +18,6 @@ export const ProfileEdit = () => {
     const [updateSuccess, setUpdateSuccess] = useState<boolean>(false);
 
     useEffect(() => {
-        // 認証されていない場合はログインページへリダイレクト
         if (!auth) {
             navigate("/login");
             return;
@@ -34,7 +33,7 @@ export const ProfileEdit = () => {
         const fetchUserData = async () => {
             setIsLoading(true);
             setError(null);
-            setUpdateSuccess(false); // 成功メッセージをリセット
+            setUpdateSuccess(false);
 
             try {
                 const loginInfoRequestData: getLoginInfoRequest = {
@@ -57,7 +56,7 @@ export const ProfileEdit = () => {
 
         fetchUserData();
 
-    }, [auth, cookies.authToken, navigate]); // 認証状態やトークンが変更されたら再実行
+    }, [auth, cookies.authToken, navigate]);
 
     // フォーム送信時のハンドラ
     const handleSubmit = async (e: FormEvent) => {
@@ -121,8 +120,6 @@ export const ProfileEdit = () => {
     return (
         <div className="profile-edit-container">
             <h2>Prifile edit</h2>
-
-            {/* フォーム */}
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="name">Name: </label>
