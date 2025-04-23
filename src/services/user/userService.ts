@@ -3,7 +3,7 @@ import { apiUrl } from "../../const";
 import { signupUserApiResponse, signupUserRequest, signupUserSuccessResponse, iconUploadApiResponse, iconUploadRequest, iconUploadSuccessResponse } from "../../model/user/signupModels";
 import { loginApiResponse, loginRequest, loginSuccessResponse } from "../../model/user/loginModels";
 import { errorResponse } from "../../model/errorModel";
-import { getLoginInfoApiResponse, getLoginInfoRequest, getLoginInfoResponse } from "../../model/user/editModels";
+import { getLoginInfoApiResponse, getLoginInfoRequest, getLoginInfoResponse, updateUserInfoApiResponse, updateUserInfoRequest, updateUserInfoResponse } from "../../model/user/profileEditModels";
 
 const API_BASE_URL = `${apiUrl}`;
 
@@ -68,6 +68,24 @@ export const getLoginInfoAPI = async (getLoginInfoData: getLoginInfoRequest) : P
     });
     if (response.status === 200 ) {
         return response.data as getLoginInfoResponse;
+    } else {
+        return response.data as errorResponse;
+    } 
+};
+
+export const updateUserInfoAPI = async ( updateUserInfoData: updateUserInfoRequest) : Promise<updateUserInfoApiResponse> => {
+    const response = await axios.put<updateUserInfoApiResponse>(
+        `${API_BASE_URL}/users`,
+        updateUserInfoData,
+        {
+            headers: {
+                'Authorization': `${updateUserInfoData.token}`,
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+            },
+    });
+    if (response.status === 200 ) {
+        return response.data as updateUserInfoResponse;
     } else {
         return response.data as errorResponse;
     } 

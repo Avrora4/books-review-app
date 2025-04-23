@@ -6,7 +6,7 @@ import { signOut } from "../../authSlice";
 import { RootState } from "../../store";
 import "./Header.scss";
 import { getLoginInfoAPI } from "../../services/user/userService";
-import { getLoginInfoRequest } from "../../model/user/editModels";
+import { getLoginInfoRequest } from "../../model/user/profileEditModels";
 
 export const Header = () => {
     const auth = useSelector((state: RootState) => state.auth.isSignIn);
@@ -65,7 +65,7 @@ export const Header = () => {
                     <li className="rightContents">
                         {auth ? (
                             <>
-                                <span>{userName}</span>
+                                <Link to='/profile'>{userName}</Link>
                                 <button onClick={handleLogout}>Logout</button>
                             </>
                         ) : (
