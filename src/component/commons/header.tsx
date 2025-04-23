@@ -6,17 +6,18 @@ import { signOut } from "../../authSlice";
 import { RootState } from "../../store";
 import "./Header.scss";
 import { getLoginInfoAPI } from "../../services/user/userService";
-import { getLoginInfoRequest } from "../../model/user/editModels";
+import { getLoginInfoRequest } from "../../model/user/profileEditModels";
 
 export const Header = () => {
     const auth = useSelector((state: RootState) => state.auth.isSignIn);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [cookies, , removeCookie] = useCookies();
+    const [cookies, , removeCookie] = useCookies(['authToken', 'userName', 'iconUrl']);
     const [userName, setUserName] = useState<string | null>('');
     const handleLogout = () => {
         removeCookie('authToken', { path: '/' });
-        removeCookie('userName', { path: '/'});
+        removeCookie('userName', { path: '/' });
+        removeCookie('iconUrl', { path: '/' });
         dispatch(signOut());
         navigate("/login")
     };
@@ -54,18 +55,21 @@ export const Header = () => {
         }
     }, [auth, userName, cookies.authToken, cookies.userName]);
 
+    const iconUrl = cookies.iconUrl;
+
     return (
         <header className='header'>
             <nav>
                 <ul>
-                    <li className="leftContents">
+                    <li className='eftContents'>
                         <span>Book-Review-App</span>
                         <Link to='/home'>Home</Link>
                     </li>
-                    <li className="rightContents">
+                    <li className='rightContents'>
                         {auth ? (
                             <>
-                                <span>{userName}</span>
+                                {iconUrl && ( <img src={iconUrl} alt={`${userName}`} className='iconImage' />)}
+                                <Link to='/profile'>{userName}</Link>
                                 <button onClick={handleLogout}>Logout</button>
                             </>
                         ) : (

@@ -3,7 +3,7 @@ import { apiUrl } from "../../const";
 import { signupUserApiResponse, signupUserRequest, signupUserSuccessResponse, iconUploadApiResponse, iconUploadRequest, iconUploadSuccessResponse } from "../../model/user/signupModels";
 import { loginApiResponse, loginRequest, loginSuccessResponse } from "../../model/user/loginModels";
 import { errorResponse } from "../../model/errorModel";
-import { getLoginInfoApiResponse, getLoginInfoRequest, getLoginInfoResponse } from "../../model/user/editModels";
+import { getLoginInfoApiResponse, getLoginInfoRequest, getLoginInfoResponse, updateUserInfoApiResponse, updateUserInfoRequest, updateUserInfoResponse } from "../../model/user/profileEditModels";
 
 const API_BASE_URL = `${apiUrl}`;
 
@@ -17,6 +17,7 @@ export const signupUserAPI  = async (userData: signupUserRequest) : Promise<sign
         },
     });
     if (response.status === 200 ) {
+        console.log(response.data);
         return response.data as signupUserSuccessResponse;
     } else {
         return response.data as errorResponse;
@@ -24,13 +25,17 @@ export const signupUserAPI  = async (userData: signupUserRequest) : Promise<sign
 };
 
 export const iconUploadAPI = async (iconData: iconUploadRequest) : Promise<iconUploadApiResponse> => {
+    const formData = new FormData();
+    if (iconData.icon) {
+        formData.append('icon', iconData.icon, iconData.icon.name);
+    }
     const response = await axios.post<iconUploadApiResponse>(
         `${API_BASE_URL}/uploads`,
-        iconData.icon,
+        formData,
         {
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `${iconData.token}`,
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${iconData.token}`,
         },
     });
     if (response.status === 200 ) {
@@ -68,6 +73,24 @@ export const getLoginInfoAPI = async (getLoginInfoData: getLoginInfoRequest) : P
     });
     if (response.status === 200 ) {
         return response.data as getLoginInfoResponse;
+    } else {
+        return response.data as errorResponse;
+    } 
+};
+
+export const updateUserInfoAPI = async ( updateUserInfoData: updateUserInfoRequest) : Promise<updateUserInfoApiResponse> => {
+    const response = await axios.put<updateUserInfoApiResponse>(
+        `${API_BASE_URL}/users`,
+        updateUserInfoData,
+        {
+            headers: {
+                'Authorization': `${updateUserInfoData.token}`,
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+            },
+    });
+    if (response.status === 200 ) {
+        return response.data as updateUserInfoResponse;
     } else {
         return response.data as errorResponse;
     } 

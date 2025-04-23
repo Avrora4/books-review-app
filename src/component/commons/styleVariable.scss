@@ -1,0 +1,34 @@
+// src/styles/_variables.scss
+
+// 色の定義 (Login.scss から抽出)
+$color-primary-gradient-start: #11b8cb; // グラデーション開始色
+$color-primary-gradient-end: #00158d; // グラデーション終了色
+$color-white: white; // 白
+$color-dark-grey: #444; // 暗い灰色 (ラベル色など)
+$color-medium-grey: #ccc; // 中間の灰色 (ボーダー色など)
+$color-red: red; // エラー色
+$color-navy: navy; // 主要なボタンや要素の色
+
+// 新しく追加する共通色（例: 成功メッセージ、ホバー時の暗い色など）
+$color-success: #28a745; // 緑系 (例として追加)
+$color-navy-dark: darken($color-navy, 15%); // navy より少し暗い色 (例: ボタンホバー)
+
+// 余白/サイズの定義 (Login.scss から抽出)
+$space-xs: 0.5rem; // 汎用的な小さい余白
+$space-sm: 0.8rem; // ラベル下の余白など
+$space-md: 1rem; // 入力フィールドのパディングなど
+$space-lg: 1.5rem; // 入力グループ下の余白など
+$space-xl: 2.5rem; // h1 下の余白など
+$space-xxl: 3rem; // フォームのパディングなど
+
+// ボーダー/角丸の定義 (Login.scss から抽出)
+$border-default: 1px solid $color-medium-grey; // 標準的なボーダー
+$border-radius-sm: 6px; // 小さめの角丸 (入力フィールド、ボタン)
+$border-radius-md: 12px; // 中くらいの角丸 (フォームコンテナ)
+
+// 影の定義 (Login.scss から抽出)
+$box-shadow-default: 0 5px 15px rgba(0, 0, 0, 0.2); // 標準的な影
+
+// その他
+$font-weight-medium: 500; // 中くらいの太さ
+$form-width: 50%; // フォームの幅 (親要素に対する割合)

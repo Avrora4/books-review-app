@@ -26,7 +26,7 @@ export const Signup = () => {
         icon: Yup.mixed().nullable(),
     });
 
-    const handleIconChange = (setFieldValue: (field: string, value: File, shouldValidate?: boolean) => void, event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleIconChange = (setFieldValue: (field: string, value: File | null, shouldValidate?: boolean) => void, event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.currentTarget.files?.[0];
         if (file) {
             new Compressor(file, {
@@ -36,6 +36,7 @@ export const Signup = () => {
                 },
                 error(err) {
                     console.error(err);
+                    setFieldValue('icon', null);
                     setErrorMessage('Faild to resize the icon');
                 },
             });
@@ -61,8 +62,9 @@ export const Signup = () => {
             if(signupResponse && typeof signupResponse === "object" && "token" in signupResponse && signupResponse.token) {
                 setTokenCookie('authToken', signupResponse.token, { path: '/', expires: new Date(Date.now() + 86400 * 1000)});
                 setNameCookie('userName', userFormData.name, { path: '/', expires: new Date(Date.now() + 86400 * 1000)});
-                dispatch(signIn);
+                dispatch(signIn());
                 if (iconValue.icon) {
+                    iconFormData.token = signupResponse.token;
                     const iconResponse = await iconUploadAPI(iconFormData);
                     if(iconResponse && typeof iconResponse === "object" && "iconUrl" in iconResponse && iconResponse.iconUrl) {
                         setIconCookie('iconUrl', iconResponse.iconUrl, { path: '/', expires: new Date(Date.now() + 86400 * 1000)});

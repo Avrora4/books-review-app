@@ -14,7 +14,6 @@ export const Login = () => {
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [, setTokenCookie] = useCookies(['authToken']);
     const [, setIconCookie] = useCookies(['iconUrl']);
-    // const [, setNameCookie] = useCookies(['userName']);
     const dispatch = useDispatch();
 
 
@@ -35,7 +34,7 @@ export const Login = () => {
             if(loginResponse && typeof loginResponse === "object" && "token" in loginResponse && loginResponse.token) {
                 setTokenCookie('authToken', loginResponse.token, { path: '/', expires: new Date(Date.now() + 86400 * 1000)});
                 setIconCookie('iconUrl', loginResponse.iconUrl, { path: '/', expires: new Date(Date.now() + 86400 * 1000)})
-                dispatch(signIn);
+                dispatch(signIn());
                 navigate('/home');
             } else {
                 setErrorMessage(`Login Fiald\n ErrorMessages: ${loginResponse}`);
