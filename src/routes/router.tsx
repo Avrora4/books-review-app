@@ -6,6 +6,7 @@ import { BookList } from "../component/booklist/booklist";
 import { Header } from "../component/commons/header";
 import { RootState } from "../store";
 import { ProfileEdit } from "../component/profile/profileEdit";
+import { BookReviewPost } from "../component/booklist/bookReviewPost";
 
 export const Router = () => {
     const auth = useSelector((state: RootState) => state.auth.isSignIn);
@@ -19,6 +20,7 @@ export const Router = () => {
                 <Route path="/home" element={auth ? <BookList /> : <Navigate to='/login' replace />}/>
                 <Route path='/*' element={auth ? <Navigate to='/home' replace/> : <Navigate to='/login' replace />} />
                 <Route path='/profile' element={auth ? <ProfileEdit /> : <Navigate to='/login' />} />
+                <Route path='/new' element={auth ? <BookReviewPost /> : <Navigate to='/login' />} />
             </Routes>
         </BrowserRouter>
     );

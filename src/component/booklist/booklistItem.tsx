@@ -9,6 +9,7 @@ interface BooklistItemProps {
 }
 
 export const BooklistItem: React.FC<BooklistItemProps> = ({response, offset}) => {
+    console.log(response);
     return (
         <ul className="booklistItem">
             {response.map((bookItem,index) => (

@@ -1,0 +1,49 @@
+// booklistItem.scss
+
+// BookList コンポーネント内でレンダリングされる ul 要素に適用されるクラス
+.booklistItem {
+    list-style: none; // デフォルトのリストスタイルを削除
+    padding: 0; // デフォルトのパディングを削除
+    margin: 0; // デフォルトのマージンを削除
+  }
+  
+  // 各リストアイテム (li 要素) にスタイルを適用
+  .booklistItem li {
+    border: 1px solid orange; // 白い枠線
+    padding: 15px; // 枠線の内側に余白
+    margin-bottom: 20px; // リストアイテム間の余白
+    border-radius: 8px; // 角を丸く
+    background-color: rgba(255, 255, 255); // 薄い半透明の白背景で、グラデーションとの対比をつける
+    color: orange;
+  
+    h2 {
+      margin-top: 0; // 要素の最初の要素なので上のマージンを削除
+      margin-bottom: 10px; // タイトルの下に余白
+      font-size: 1.2em; // タイトルを少し大きく
+    }
+  
+    p {
+       margin-bottom: 10px; // 段落の下に余白
+       line-height: 1.5; // 行の高さを調整して読みやすく
+    }
+  
+    a {
+      color: navy; // リンクの色を明るい青に
+      text-decoration: none; // デフォルトの下線を削除
+      word-break: break-all; // 長いURLがはみ出さないように改行
+      &:hover {
+        text-decoration: underline; // ホバー時に下線を表示
+      }
+    }
+  
+    // "No book review" メッセージの li にも適用されるが、
+    // 必要であれば別途クラスを付けてスタイルを調整可能
+     text-align: left; // 基本は左寄せに（中央寄せが必要なら別途クラス）
+  }
+  
+  // 「No book review」表示時の li のスタイル（任意）
+  .booklistItem li:last-child:only-child { // リストが1つだけで、それが最後の要素の場合（「No book review」のliを想定）
+       text-align: center; // 中央寄せ
+       font-style: italic; // 斜体
+       opacity: 0.8; // 少し薄く
+  }
