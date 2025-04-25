@@ -1,5 +1,6 @@
 import { errorResponse } from "../errorModel"
 
+// Get booklist data models
 export interface booklistSuccessResponse {
     id: string;
     title: string;
@@ -18,3 +19,19 @@ export interface booklistRequest {
 export type booklistResponse = booklistSuccessResponse[];
 
 export type booklistApiResponse = booklistResponse | errorResponse;
+
+
+// Post book review date models
+
+export interface bookPostRequest {
+  title: string;
+  url: string;
+  detail: string;
+  review: string;
+}
+
+export interface bookPostResponse {
+  message: string;
+}
+
+export type bookPostApiResponse = bookPostResponse | errorResponse;

@@ -1,0 +1,49 @@
+// src/components/BookReviewPost/BookReviewPost.scss
+
+.BookReviewForm {
+    // ... 既存のスタイル ...
+
+    form {
+        // ... 既存のスタイル ...
+
+        div.form-group {
+            // ... 既存のスタイル ...
+
+            input[type="text"],
+            input[type="number"], // rating がなくなったが他の数値入力に備え残しても良い
+            input[type="url"], // url フィールドの input type="url" 用に追加
+            textarea { // textarea スタイルを調整
+              width: 100%;
+              padding: 1rem;
+              border: 1px solid #ccc;
+              border-radius: 6px;
+              box-sizing: border-box;
+              font-size: 1rem;
+              background-color: white;
+              color: #333;
+              transition: border-color 0.2s ease-in-out;
+
+              &:focus {
+                  outline: none;
+                  border-color: #007bff;
+                  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+              }
+
+               &:disabled {
+                    background-color: #e9ecef;
+                    cursor: not-allowed;
+                }
+            }
+
+             textarea {
+                 resize: vertical; // 垂直方向のみリサイズ可能に
+             }
+
+            // ... p.error-message スタイル ...
+        }
+
+        // ... button[type="submit"] スタイル ...
+    }
+
+    // ... api-error-message スタイル ...
+}

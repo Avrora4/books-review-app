@@ -130,7 +130,7 @@ export const ProfileEdit = () => {
                 {error && <p className="error-message">Error: {error}</p>}
 
                 <button type="submit" disabled={isLoading || isUpdating}>
-                    {isUpdating ? '更新中...' : 'プロフィールを更新'}
+                    {isUpdating ? 'Now Updating' : 'Update'}
                 </button>
             </form>
         </div>

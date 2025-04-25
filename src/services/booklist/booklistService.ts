@@ -1,6 +1,6 @@
 import axios from "axios";
 import { apiUrl } from "../../const";
-import { booklistResponse, booklistApiResponse, booklistRequest } from "../../model/booklist/booklistModels";
+import { booklistResponse, booklistApiResponse, booklistRequest, bookPostResponse, bookPostApiResponse, bookPostRequest } from "../../model/booklist/booklistModels";
 import { errorResponse } from "../../model/errorModel"
 
 const API_BASE_URL = `${apiUrl}`;
@@ -21,6 +21,25 @@ export const booklistAPI  = async (booklistRequestData: booklistRequest) : Promi
         return response.data as errorResponse;
     }
 }
+
+export const bookReviewPostAPI = async (token: string, bookPostRequestData: bookPostRequest) : Promise<bookPostApiResponse> => {
+    const response = await axios.post(
+        `${API_BASE_URL}/books`,
+        bookPostRequestData,
+        {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+        }
+    );
+    if (response.status === 200 ) {
+        return response.data as bookPostResponse;
+    } else {
+        return response.data as errorResponse;
+    }
+}
+
+
 
 // pagesフォルダ
 // 正式なものはない

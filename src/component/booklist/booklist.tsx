@@ -1,10 +1,10 @@
-// src/components/BookList.tsx
-
 import { useState, useEffect } from "react";
 import { booklistRequest, booklistResponse } from "../../model/booklist/booklistModels";
 import { useCookies } from "react-cookie";
 import { booklistAPI } from "../../services/booklist/booklistService";
 import { BooklistItem } from "./booklistItem";
+import { Link } from "react-router-dom";
+import "./booklist.scss"
 
 // Define booklist componenst
 export const BookList = () => {
@@ -37,6 +37,8 @@ export const BookList = () => {
             }
         } catch (err) {
             setError(`Error: ${err}`);
+        } finally {
+            setIsLoading(false);
         }
     }
     getBooklist();
@@ -60,6 +62,11 @@ export const BookList = () => {
 
   return (
     <div className="booklistBox">
+        <div className="postReviewButton">
+            <Link to="/new">
+                <button>ReviewPost</button>
+            </Link>
+        </div>
       {isLoading && (
         <div className="loadingMessage">
           <p>Now Loading</p>
