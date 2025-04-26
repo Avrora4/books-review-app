@@ -1,71 +1,106 @@
-.booklistBox {
-    background: linear-gradient(to bottom, #f7f7f7, rgb(0, 225, 255));
+.booklist {
+    background: linear-gradient(135deg, #11b8cb, #00158d);
+    width: 100vw;
     min-height: 100vh;
-    padding: 20px;
-    color: #fff;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-top: 70px;
+    color: orange;
     box-sizing: border-box;
+
   
-    .postReviewButton {
+    &__post-action {
       margin-bottom: 20px;
       text-align: center;
     }
   
-    .postReviewButton button {
+    &__post-button {
       padding: 10px 20px;
       font-size: 1em;
       cursor: pointer;
       background-color: #fff;
-      color: #3f2b96;
-      border: none;
+      color: navy;
+      border: 1px solid #ddd;
       border-radius: 5px;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  
       &:hover {
         background-color: #eee;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
     }
   
-    .loadingMessage, .errorMessage {
+    &__loading {
       text-align: center;
-      margin-top: 20px;
+      margin: 20px 15px;
       padding: 15px;
       border-radius: 8px;
       font-weight: bold;
+      background-color: rgba(255, 255, 255, 0.8);
+      color: navy;
+      border: 1px solid #ccc;
     }
   
-    .loadingMessage {
-      background-color: rgba(255, 255, 255, 0.8); // 半透明の白背景
-      color: #333; // 暗めの文字色
+    &__error {
+      text-align: center;
+      margin: 20px 15px;
+      padding: 15px;
+      border-radius: 8px;
+      font-weight: bold;
+      background-color: rgba(255, 0, 0, 0.1);
+      color: #d8000c;
+      border: 1px solid #d8000c;
+      p {
+          margin: 5px 0;
+      }
     }
   
-    .errorMessage {
-       background-color: rgba(255, 0, 0, 0.2); // 半透明の赤背景
-       color: #fff; // 白い文字色
-       border: 1px solid red; // 赤い枠線
+    &__items {
+      margin-top: 20px;
     }
   
-    // ページネーションボタンのスタイル
-    .PreviousButton, .NextButton {
-       display: inline-block;
-       margin: 20px 10px;
+    &__list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
     }
   
-    .PreviousButton button, .NextButton button {
-       padding: 10px 20px;
-       font-size: 1em;
-       cursor: pointer;
-       background-color: #fff;
-       color: #3f2b96;
-       border: none;
-       border-radius: 5px;
-       transition: background-color 0.3s ease, opacity 0.3s ease;
+     &__empty-message {
+        text-align: center;
+        padding: 20px 15px;
+        color: black;
+        font-style: italic;
+     }
   
-       &:hover:not(:disabled) {
-         background-color: #eee;
-       }
+    &__pagination {
+      text-align: center;
+      margin-top: 20px;
+      padding: 20px 15px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.5);
+    }
   
-       &:disabled {
-          opacity: 0.5; // 無効時は半透明に
-          cursor: not-allowed; // カーソルを変更
-       }
+    &__prev-button,
+    &__next-button {
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+      background-color: #fff;
+      color: navy;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      transition: background-color 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+      margin: 0 10px;
+  
+      &:hover:not(:disabled) {
+        background-color: #eee;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+  
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        background-color: #f0f0f0;
+      }
     }
   }

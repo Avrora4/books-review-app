@@ -78,3 +78,5 @@ export const Login = () => {
     );
 };
 
+// Cookieで設定できるデータのサイズが限られているため、今回は必要ないかも、、
+// localstrageが非推奨な理由は、javascriptからアクセスできてしまうため

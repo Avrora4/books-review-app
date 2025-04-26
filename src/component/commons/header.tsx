@@ -14,6 +14,7 @@ export const Header = () => {
     const navigate = useNavigate();
     const [cookies, , removeCookie] = useCookies(['authToken', 'userName', 'iconUrl']);
     const [userName, setUserName] = useState<string | null>('');
+    const [iconUrl, setIconUrl] = useState<string | null>('');
     const handleLogout = () => {
         removeCookie('authToken', { path: '/' });
         removeCookie('userName', { path: '/' });
@@ -37,6 +38,9 @@ export const Header = () => {
 
                          if (userInfoResponse && typeof userInfoResponse === "object" && "name" in userInfoResponse && userInfoResponse.name) {
                              setUserName(userInfoResponse.name);
+                             if ("iconUrl" in userInfoResponse && userInfoResponse.iconUrl) {
+                                setIconUrl(userInfoResponse.iconUrl);
+                             }
                          } else {
                              console.warn("Failed to fetch username in Header:", userInfoResponse);
                              setUserName(cookies.userName || null);
@@ -55,8 +59,6 @@ export const Header = () => {
         }
     }, [auth, userName, cookies.authToken, cookies.userName]);
 
-    const iconUrl = cookies.iconUrl;
-
     return (
         <header className='header'>
             <nav>
@@ -68,7 +70,7 @@ export const Header = () => {
                     <li className='rightContents'>
                         {auth ? (
                             <>
-                                {iconUrl && ( <img src={iconUrl} alt={`${userName}`} className='iconImage' />)}
+                                {iconUrl && ( <img src={iconUrl} alt={`userIcon`} className='iconImage' />)}
                                 <Link to='/profile'>{userName}</Link>
                                 <button onClick={handleLogout}>Logout</button>
                             </>

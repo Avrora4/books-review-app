@@ -1,4 +1,4 @@
-import { errorResponse } from "../errorModel";
+import { ErrorResponse } from "../errorModel";
 
 export interface loginSuccessResponse {
     token: string
@@ -10,4 +10,4 @@ export interface loginRequest {
     password: string
   }
 
-export type loginApiResponse = loginSuccessResponse | errorResponse;
+export type loginApiResponse = loginSuccessResponse | ErrorResponse;

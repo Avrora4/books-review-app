@@ -1,29 +1,34 @@
 import "./booklistItem.scss";
 import { Link } from "react-router-dom";
-import "../../model/booklist/booklistModels"
 import { booklistResponse } from "../../model/booklist/booklistModels";
 
 interface BooklistItemProps {
     response: booklistResponse;
-    offset: number
+    offset: number;
 }
 
-export const BooklistItem: React.FC<BooklistItemProps> = ({response, offset}) => {
-    console.log(response);
+export const BooklistItem = ({ response, offset } : BooklistItemProps) => {
+    if (!response || response.length === 0) {
+        return null;
+    }
+
     return (
-        <ul className="booklistItem">
-            {response.map((bookItem,index) => (
-                <li key={index}>
-                    <h2>No.{offset + index + 1} TITLE: {bookItem.title}</h2>
-                    <br/>
-                    <Link to={bookItem.url}>URL: {bookItem.url}</Link>
-                    <br/>
-                    <p>Reviewer: {bookItem.reviewer}</p>
-                    <br/>
-                    <p>Review Detail:</p>
-                    <br/>
-                    <p>{bookItem.detail}</p>
-                    <br/>
+        <ul className="book-item-list">
+            {response.map((bookItem, index) => (
+                <li key={bookItem.id || index} className="book-item-list__item">
+                    <Link to={`/detail/${bookItem.id}`} className="book-item-list__link-wrapper">
+                        <h2 className="book-item-list__title">
+                            No.{offset + index + 1} TITLE: {bookItem.title}
+                        </h2>
+                        <Link to={bookItem.url} className="book-item-list__url">
+                            URL: {bookItem.url}
+                        </Link>
+                        <p className="book-item-list__reviewer">
+                            Reviewer: {bookItem.reviewer}
+                        </p>
+                        <p className="book-item-list__detail-label">Review Detail:</p>
+                        <p className="book-item-list__detail-text">{bookItem.detail}</p>
+                    </Link>
                 </li>
             ))}
         </ul>
