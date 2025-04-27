@@ -1,9 +1,9 @@
 import "./booklistItem.scss";
 import { Link } from "react-router-dom";
-import { booklistResponse } from "../../model/booklist/booklistModels";
+import { BooklistResponse, BooklistSuccessResponse } from "../../model/booklist/booklistModels";
 
 interface BooklistItemProps {
-    response: booklistResponse;
+    response: BooklistResponse;
     offset: number;
 }
 
@@ -14,7 +14,7 @@ export const BooklistItem = ({ response, offset } : BooklistItemProps) => {
 
     return (
         <ul className="book-item-list">
-            {response.map((bookItem, index) => (
+            {response.map((bookItem: BooklistSuccessResponse, index: number) => (
                 <li key={bookItem.id || index} className="book-item-list__item">
                     <Link to={`/detail/${bookItem.id}`} className="book-item-list__link-wrapper">
                         <h2 className="book-item-list__title">

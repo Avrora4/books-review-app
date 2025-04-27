@@ -17,7 +17,7 @@ export const Router = () => {
             <Routes>
                 <Route path="/login" element={auth ? <Navigate to='/home/:offset' /> : <Login />} />
                 <Route path="/signup" element={auth ? <Navigate to='/home/:offset' /> : <Signup />} />
-                <Route path="/home" element={auth ? <BookList /> : <Navigate to='/login' replace />}/>
+                <Route path="/home/:offset" element={auth ? <BookList /> : <Navigate to='/login' replace />}/>
                 <Route path='/*' element={auth ? <Navigate to='/home/:offset' replace/> : <Navigate to='/login' replace />} />
                 <Route path='/profile' element={auth ? <ProfileEdit /> : <Navigate to='/login' />} />
                 <Route path='/new' element={auth ? <BookReviewPost /> : <Navigate to='/login' />} />

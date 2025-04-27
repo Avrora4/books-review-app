@@ -1,64 +1,26 @@
 import { useCookies } from "react-cookie";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { signOut } from "../../authSlice";
+// import { useEffect, useState } from "react";
+import { SignOut } from "../../authSlice";
 import { RootState } from "../../store";
 import "./Header.scss";
-import { getLoginInfoAPI } from "../../services/user/userService";
-import { getLoginInfoRequest } from "../../model/user/profileEditModels";
 
 export const Header = () => {
     const auth = useSelector((state: RootState) => state.auth.isSignIn);
+    const userInfo = useSelector((state: RootState) => state.auth.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [cookies, , removeCookie] = useCookies(['authToken', 'userName', 'iconUrl']);
-    const [userName, setUserName] = useState<string | null>('');
-    const [iconUrl, setIconUrl] = useState<string | null>('');
+    const [ , removeCookie] = useCookies(['authToken']);
     const handleLogout = () => {
         removeCookie('authToken', { path: '/' });
-        removeCookie('userName', { path: '/' });
-        removeCookie('iconUrl', { path: '/' });
-        dispatch(signOut());
+        dispatch(SignOut());
         navigate("/login")
     };
 
-    useEffect(() => {
-        if (auth && !userName) {
-            const authToken = cookies.authToken;
-
-            // トークンがあればユーザー名を取得
-            if (authToken) {
-                const fetchUserName = async () => {
-                    try {
-                        const loginInfoRequestData: getLoginInfoRequest = {
-                            token: `Bearer ${authToken}`
-                            };
-                         const userInfoResponse = await getLoginInfoAPI(loginInfoRequestData);
-
-                         if (userInfoResponse && typeof userInfoResponse === "object" && "name" in userInfoResponse && userInfoResponse.name) {
-                             setUserName(userInfoResponse.name);
-                             if ("iconUrl" in userInfoResponse && userInfoResponse.iconUrl) {
-                                setIconUrl(userInfoResponse.iconUrl);
-                             }
-                         } else {
-                             console.warn("Failed to fetch username in Header:", userInfoResponse);
-                             setUserName(cookies.userName || null);
-                         }
-                    } catch (err) {
-                         console.error("Error fetching username in Header:", err);
-                         setUserName(cookies.userName || null);
-                    }
-                };
-                fetchUserName();
-            } else {
-                 setUserName(cookies.userName || null);
-            }
-        } else if (!auth && userName) {
-            setUserName(null);
-        }
-    }, [auth, userName, cookies.authToken, cookies.userName]);
-
+    const userName = userInfo?.name || null;
+    const iconUrl = userInfo?.iconUrl || null;
+              
     return (
         <header className='header'>
             <nav>

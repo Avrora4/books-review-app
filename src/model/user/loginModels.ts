@@ -2,7 +2,6 @@ import { ErrorResponse } from "../errorModel";
 
 export interface loginSuccessResponse {
     token: string
-    iconUrl: string
 }
 
 export interface loginRequest {

@@ -22,7 +22,6 @@ export type BooklistApiResponse = BooklistResponse | ErrorResponse;
 
 
 // Post book review date models
-
 export interface BookPostRequest {
   title: string;
   url: string;
