@@ -15,7 +15,7 @@ import { getLoginInfoRequest } from "../../model/user/profileEditModels.ts";
 export const Signup = () => {
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState<string>('');
-    const [tokenCookie, setTokenCookie] = useCookies(['authToken']);
+    const [, setTokenCookie] = useCookies(['authToken']);
     const dispatch = useDispatch();
 
     const validationSchema = Yup.object().shape({
@@ -68,29 +68,30 @@ export const Signup = () => {
                         console.log(iconResponse.iconUrl);
                     }
                 }
+            
+                try {
+                    const loginInfoRequestData: getLoginInfoRequest = {
+                        token: `Bearer ${signupResponse.token}`
+                    };
+                     const userInfo = await getLoginInfoAPI(loginInfoRequestData);
+    
+                     if (userInfo && typeof userInfo === 'object' && "name" in userInfo && userInfo.name) {
+                         dispatch(SignIn({ name: userInfo.name, iconUrl: userInfo.iconUrl || null })); // iconUrl は getLoginInfoAPI からの値を使用するのが確実
+    
+                         console.log("User info fetched after login:", userInfo);
+    
+                         navigate('/home');
+                     } else {
+                         setErrorMessage("Login successful, but failed to fetch user info.");
+                     }
+    
+                } catch (err) {
+                     setErrorMessage(`"Error calling getLoginInfoAPI after login: " ${err}`);
+                }
 
             } else {
                 setErrorMessage(`Signup Failed\n ErrorMessages: ${signupResponse}`);
             }
-                    try {
-                        const loginInfoRequestData: getLoginInfoRequest = {
-                            token: `Bearer ${tokenCookie.authToken}`
-                        };
-                         const userInfo = await getLoginInfoAPI(loginInfoRequestData);
-        
-                         if (userInfo && typeof userInfo === 'object' && "name" in userInfo && userInfo.name) {
-                             dispatch(SignIn({ name: userInfo.name, iconUrl: userInfo.iconUrl || null })); // iconUrl は getLoginInfoAPI からの値を使用するのが確実
-        
-                             console.log("User info fetched after login:", userInfo);
-        
-                             navigate('/home');
-                         } else {
-                             setErrorMessage("Login successful, but failed to fetch user info.");
-                         }
-        
-                    } catch (err) {
-                         setErrorMessage(`"Error calling getLoginInfoAPI after login: " ${err}`);
-                    }
 
         } catch (err) {
             setErrorMessage(`Error during signup: ${err}`);

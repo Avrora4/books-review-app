@@ -42,7 +42,7 @@ export const bookReviewPostAPI = async (token: string, bookPostRequestData: Book
     }
 }
 
-export const geBookDetailAPI = async (token: string, GetBookDetailRequestData: GetBookDetailRequest) : Promise<GetBookDetailApiResponse> => {
+export const getBookDetailAPI = async (token: string, GetBookDetailRequestData: GetBookDetailRequest) : Promise<GetBookDetailApiResponse> => {
     const response = await axios.get(
         `${API_BASE_URL}/books/${GetBookDetailRequestData.id}`,
         {

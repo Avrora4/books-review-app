@@ -11,7 +11,7 @@ export const BookList = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [offset, setOffset] = useState<number>(0);
     const [error, setError] = useState<string | null>(null);
-    const [cookies] = useCookies();
+    const [cookies] = useCookies(['authToken']);
     const [searchParams, setSearchParams] = useSearchParams();
 
     // リロード時に、offsetが元にもどってしまうため、クエリパラメータを用いてリンクを作成する方が良い

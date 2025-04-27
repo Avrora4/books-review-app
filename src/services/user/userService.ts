@@ -17,7 +17,6 @@ export const signupUserAPI  = async (userData: signupUserRequest) : Promise<sign
         },
     });
     if (response.status === 200 ) {
-        console.log(response.data);
         return response.data as signupUserSuccessResponse;
     } else {
         return response.data as ErrorResponse;

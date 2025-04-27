@@ -29,7 +29,7 @@ export default function App() {
                         dispatch(SignIn({ name: userInfo.name , iconUrl: userInfo.iconUrl || null}));
                     } else {
                         dispatch(SignOut());
-                    removeCookie('authToken', {path: '/'});
+                        removeCookie('authToken', { path: '/' });
                     }
                 } catch (err) {
                     console.log(err);
