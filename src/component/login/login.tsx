@@ -4,18 +4,17 @@ import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { loginRequest } from "../../model/user/loginModels";
-import { loginAPI } from "../../services/user/userService";
+import { loginAPI, getLoginInfoAPI } from "../../services/user/userService";
 import { useCookies } from "react-cookie";
 import { useDispatch } from "react-redux";
-import { signIn } from "../../authSlice";
+import { SignIn } from "../../authSlice";
+import { getLoginInfoRequest } from "../../model/user/profileEditModels"
 
 export const Login = () => {
-    const navigate = useNavigate();
+    const navigate = useNavigate(); 
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [, setTokenCookie] = useCookies(['authToken']);
-    const [, setIconCookie] = useCookies(['iconUrl']);
     const dispatch = useDispatch();
-
 
     const validationSchema = Yup.object().shape({
         email: Yup.string().email('Your email address is not correct').required('Please input your email'),
@@ -30,15 +29,33 @@ export const Login = () => {
 
         try {
             const loginResponse = await loginAPI(loginFormData);
-
             if(loginResponse && typeof loginResponse === "object" && "token" in loginResponse && loginResponse.token) {
                 setTokenCookie('authToken', loginResponse.token, { path: '/', expires: new Date(Date.now() + 86400 * 1000)});
-                setIconCookie('iconUrl', loginResponse.iconUrl, { path: '/', expires: new Date(Date.now() + 86400 * 1000)})
-                dispatch(signIn());
-                navigate('/home');
+
+                try {
+                    const loginInfoRequestData: getLoginInfoRequest = {
+                        token: `Bearer ${loginResponse.token}`
+                    };
+                     const userInfo = await getLoginInfoAPI(loginInfoRequestData);
+    
+                     if (userInfo && typeof userInfo === 'object' && "name" in userInfo && userInfo.name) {
+                         dispatch(SignIn({ name: userInfo.name, iconUrl: userInfo.iconUrl || null }));
+    
+                         console.log("User info fetched after login:", userInfo);
+    
+                         navigate('/home');
+                     } else {
+                         setErrorMessage("Login successful, but failed to fetch user info.");
+                     }
+    
+                } catch (err) {
+                     setErrorMessage(`"Error calling getLoginInfoAPI after login: " ${err}`);
+                }
             } else {
                 setErrorMessage(`Login Fiald\n ErrorMessages: ${loginResponse}`);
             }
+            
+
         } catch (err) {
             setErrorMessage(`Error during login: ${err}`);
         }
@@ -78,3 +95,5 @@ export const Login = () => {
     );
 };
 
+// Cookieで設定できるデータのサイズが限られているため、今回は必要ないかも、、
+// localstrageが非推奨な理由は、javascriptからアクセスできてしまうため

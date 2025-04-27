@@ -1,4 +1,4 @@
-import { errorResponse } from "../errorModel";
+import { ErrorResponse } from "../errorModel";
 
 export interface signupUserSuccessResponse {
   token: string;
@@ -10,7 +10,7 @@ export interface signupUserRequest {
   password: string;
 }
   
-export type signupUserApiResponse = signupUserSuccessResponse | errorResponse;
+export type signupUserApiResponse = signupUserSuccessResponse | ErrorResponse;
 
 export interface iconUploadSuccessResponse {
   iconUrl: string;
@@ -21,4 +21,4 @@ export interface iconUploadRequest {
   icon: File | null;
 }
 
-export type iconUploadApiResponse = iconUploadSuccessResponse | errorResponse;
+export type iconUploadApiResponse = iconUploadSuccessResponse | ErrorResponse;

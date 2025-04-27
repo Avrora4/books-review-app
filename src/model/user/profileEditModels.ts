@@ -1,4 +1,4 @@
-import { errorResponse } from "../errorModel";
+import { ErrorResponse } from "../errorModel";
 
 export interface getLoginInfoResponse {
     name: string
@@ -9,7 +9,7 @@ export interface getLoginInfoRequest {
     token: string
 };
 
-export type getLoginInfoApiResponse = getLoginInfoResponse | errorResponse;
+export type getLoginInfoApiResponse = getLoginInfoResponse | ErrorResponse;
 
 
 export interface updateUserInfoRequest {
@@ -21,4 +21,4 @@ export interface updateUserInfoResponse extends getLoginInfoResponse {
     name: string;
 };
 
-export type updateUserInfoApiResponse = updateUserInfoResponse | errorResponse;
+export type updateUserInfoApiResponse = updateUserInfoResponse | ErrorResponse;

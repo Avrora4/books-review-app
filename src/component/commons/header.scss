@@ -16,9 +16,6 @@ $button-border-style: solid;
   padding: 10px 20px;
   border-bottom: 1px solid #ddd;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  // display: flex;
-  // justify-content: space-between;
-  // align-items: center;
   position: fixed;
   top: 0;
   left: 0;
@@ -74,8 +71,6 @@ $button-border-style: solid;
 
     &:hover {
       background-color: $button-hover-bg-color;
-      //color: $header-text-color;
-      //text-decoration: none;
     }
   }
 
@@ -101,7 +96,7 @@ $button-border-style: solid;
   }
 
   span {
-      //margin-right: 20px;
+      margin-right: 20px;
       font-weight: bold;
   }
 }

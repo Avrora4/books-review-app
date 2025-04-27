@@ -7,6 +7,7 @@ import { Header } from "../component/commons/header";
 import { RootState } from "../store";
 import { ProfileEdit } from "../component/profile/profileEdit";
 import { BookReviewPost } from "../component/booklist/bookReviewPost";
+import { BookDetail } from "../component/booklist/bookDetail";
 
 export const Router = () => {
     const auth = useSelector((state: RootState) => state.auth.isSignIn);
@@ -15,12 +16,13 @@ export const Router = () => {
         <BrowserRouter>
         <Header />
             <Routes>
-                <Route path="/login" element={auth ? <Navigate to='/home' /> : <Login />} />
-                <Route path="/signup" element={auth ? <Navigate to='/home' /> : <Signup />} />
-                <Route path="/home" element={auth ? <BookList /> : <Navigate to='/login' replace />}/>
-                <Route path='/*' element={auth ? <Navigate to='/home' replace/> : <Navigate to='/login' replace />} />
+                <Route path="/login" element={auth ? <Navigate to='/home/:offset' /> : <Login />} />
+                <Route path="/signup" element={auth ? <Navigate to='/home/:offset' /> : <Signup />} />
+                <Route path="/home/:offset" element={auth ? <BookList /> : <Navigate to='/login' replace />}/>
+                <Route path='/*' element={auth ? <Navigate to='/home/:offset' replace/> : <Navigate to='/login' replace />} />
                 <Route path='/profile' element={auth ? <ProfileEdit /> : <Navigate to='/login' />} />
                 <Route path='/new' element={auth ? <BookReviewPost /> : <Navigate to='/login' />} />
+                <Route path='/detail/:id' element={auth ? <BookDetail /> : <Navigate to='/login' />} />
             </Routes>
         </BrowserRouter>
     );

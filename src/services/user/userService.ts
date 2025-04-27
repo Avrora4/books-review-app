@@ -2,7 +2,7 @@ import axios from "axios";
 import { apiUrl } from "../../const";
 import { signupUserApiResponse, signupUserRequest, signupUserSuccessResponse, iconUploadApiResponse, iconUploadRequest, iconUploadSuccessResponse } from "../../model/user/signupModels";
 import { loginApiResponse, loginRequest, loginSuccessResponse } from "../../model/user/loginModels";
-import { errorResponse } from "../../model/errorModel";
+import { ErrorResponse } from "../../model/errorModel";
 import { getLoginInfoApiResponse, getLoginInfoRequest, getLoginInfoResponse, updateUserInfoApiResponse, updateUserInfoRequest, updateUserInfoResponse } from "../../model/user/profileEditModels";
 
 const API_BASE_URL = `${apiUrl}`;
@@ -17,10 +17,9 @@ export const signupUserAPI  = async (userData: signupUserRequest) : Promise<sign
         },
     });
     if (response.status === 200 ) {
-        console.log(response.data);
         return response.data as signupUserSuccessResponse;
     } else {
-        return response.data as errorResponse;
+        return response.data as ErrorResponse;
     }
 };
 
@@ -41,7 +40,7 @@ export const iconUploadAPI = async (iconData: iconUploadRequest) : Promise<iconU
     if (response.status === 200 ) {
         return response.data as iconUploadSuccessResponse;
     } else {
-        return response.data as errorResponse;
+        return response.data as ErrorResponse;
     }
 };
 
@@ -57,7 +56,7 @@ export const loginAPI = async (loginData: loginRequest) : Promise<loginApiRespon
     if (response.status === 200 ) {
         return response.data as loginSuccessResponse;
     } else {
-        return response.data as errorResponse;
+        return response.data as ErrorResponse;
     } 
 };
 
@@ -74,7 +73,7 @@ export const getLoginInfoAPI = async (getLoginInfoData: getLoginInfoRequest) : P
     if (response.status === 200 ) {
         return response.data as getLoginInfoResponse;
     } else {
-        return response.data as errorResponse;
+        return response.data as ErrorResponse;
     } 
 };
 
@@ -92,6 +91,6 @@ export const updateUserInfoAPI = async ( updateUserInfoData: updateUserInfoReque
     if (response.status === 200 ) {
         return response.data as updateUserInfoResponse;
     } else {
-        return response.data as errorResponse;
+        return response.data as ErrorResponse;
     } 
 };

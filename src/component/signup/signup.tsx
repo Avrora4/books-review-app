@@ -5,18 +5,17 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import Compressor from "compressorjs";
 import "./Signup.scss"
 import { signupUserRequest, iconUploadRequest } from "../../model/user/signupModels.ts";
-import { iconUploadAPI, signupUserAPI } from "../../services/user/userService.ts";
+import { iconUploadAPI, signupUserAPI, getLoginInfoAPI } from "../../services/user/userService.ts";
 import { useCookies } from "react-cookie";
 import { useDispatch } from "react-redux";
-import { signIn } from "../../authSlice.ts";
+import { SignIn } from "../../authSlice.ts";
+import { getLoginInfoRequest } from "../../model/user/profileEditModels.ts";
 
 
 export const Signup = () => {
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [, setTokenCookie] = useCookies(['authToken']);
-    const [, setIconCookie] = useCookies(['iconUrl']);
-    const [, setNameCookie] = useCookies(['userName']);
     const dispatch = useDispatch();
 
     const validationSchema = Yup.object().shape({
@@ -61,16 +60,35 @@ export const Signup = () => {
 
             if(signupResponse && typeof signupResponse === "object" && "token" in signupResponse && signupResponse.token) {
                 setTokenCookie('authToken', signupResponse.token, { path: '/', expires: new Date(Date.now() + 86400 * 1000)});
-                setNameCookie('userName', userFormData.name, { path: '/', expires: new Date(Date.now() + 86400 * 1000)});
-                dispatch(signIn());
+                
                 if (iconValue.icon) {
                     iconFormData.token = signupResponse.token;
                     const iconResponse = await iconUploadAPI(iconFormData);
                     if(iconResponse && typeof iconResponse === "object" && "iconUrl" in iconResponse && iconResponse.iconUrl) {
-                        setIconCookie('iconUrl', iconResponse.iconUrl, { path: '/', expires: new Date(Date.now() + 86400 * 1000)});
+                        console.log(iconResponse.iconUrl);
                     }
                 }
-                navigate('/home');
+            
+                try {
+                    const loginInfoRequestData: getLoginInfoRequest = {
+                        token: `Bearer ${signupResponse.token}`
+                    };
+                     const userInfo = await getLoginInfoAPI(loginInfoRequestData);
+    
+                     if (userInfo && typeof userInfo === 'object' && "name" in userInfo && userInfo.name) {
+                         dispatch(SignIn({ name: userInfo.name, iconUrl: userInfo.iconUrl || null })); // iconUrl は getLoginInfoAPI からの値を使用するのが確実
+    
+                         console.log("User info fetched after login:", userInfo);
+    
+                         navigate('/home');
+                     } else {
+                         setErrorMessage("Login successful, but failed to fetch user info.");
+                     }
+    
+                } catch (err) {
+                     setErrorMessage(`"Error calling getLoginInfoAPI after login: " ${err}`);
+                }
+
             } else {
                 setErrorMessage(`Signup Failed\n ErrorMessages: ${signupResponse}`);
             }
