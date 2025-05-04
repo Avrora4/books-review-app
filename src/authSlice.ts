@@ -10,11 +10,13 @@ interface UserInfo {
 }
 export interface AuthState {
     isSignIn: boolean;
+    isLoading: boolean;
     user: UserInfo | null;
 }
 
 const initialState: AuthState = {
     isSignIn: cookie.get("token") !== undefined,
+    isLoading: true,
     user: null,
 };
 
@@ -24,14 +26,19 @@ export const AuthSlice = createSlice({
     reducers: {
         SignIn: (state: WritableDraft<AuthState>, action: PayloadAction<UserInfo | null>) => {
             state.isSignIn = true;
+            state.isLoading = false;
             state.user = action.payload;
         },
         SignOut: (state: WritableDraft<AuthState>) => {
             state.isSignIn = false;
+            state.isLoading = false;
             state.user = null;
+        },
+        CompleteLoading: (state: WritableDraft<AuthState>) => {
+            state.isLoading = false;
         },
     },
 });
 
-export const { SignIn, SignOut } = AuthSlice.actions;
+export const { SignIn, SignOut, CompleteLoading } = AuthSlice.actions;
 export default AuthSlice.reducer;

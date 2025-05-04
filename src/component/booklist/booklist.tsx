@@ -4,6 +4,8 @@ import { useCookies } from "react-cookie";
 import { booklistAPI } from "../../services/booklist/booklistService";
 import { BooklistItem } from "./booklistItem";
 import { Link, useSearchParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 import "./booklist.scss";
 
 export const BookList = () => {
@@ -13,8 +15,7 @@ export const BookList = () => {
     const [error, setError] = useState<string | null>(null);
     const [cookies] = useCookies(['authToken']);
     const [searchParams, setSearchParams] = useSearchParams();
-
-    // リロード時に、offsetが元にもどってしまうため、クエリパラメータを用いてリンクを作成する方が良い
+    const auth = useSelector((state: RootState) => state.auth.isSignIn);
 
     // Get the data
     useEffect(() => {
@@ -24,6 +25,15 @@ export const BookList = () => {
             const currentOffset = searchParams.get('offset');
             const offsetValue = currentOffset ? parseInt(currentOffset, 10) : 0;
             setOffset(offsetValue);
+
+            // check Auth
+            if (!cookies.authToken || !auth) {
+                console.warn("BookList - Skipping API call: Token not available or not signed in via Redux.");
+                setError("Authentication required to view booklist.");
+                setIsLoading(false);
+                setOffset(offsetValue);
+                return;
+            }
 
             // Call API
             try {
@@ -47,7 +57,7 @@ export const BookList = () => {
             }
         };
         getBooklist();
-    }, [offset, searchParams, cookies.authToken]);
+    }, [offset, searchParams, cookies.authToken, auth]);
 
     const nextOffset = () => {
         const nextOffset = offset + 10;
@@ -96,8 +106,6 @@ export const BookList = () => {
                     <button className="booklist__post-button">ReviewPost</button>
                 </Link>
             </div>
-
-            {/* Element: items (Container for the actual list items) */}
             <div className="booklist__items">
                 {booklist && (
                     <ul className="booklist__list">

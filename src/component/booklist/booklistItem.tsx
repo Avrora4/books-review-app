@@ -20,15 +20,19 @@ export const BooklistItem = ({ response, offset } : BooklistItemProps) => {
                         <h2 className="book-item-list__title">
                             No.{offset + index + 1} TITLE: {bookItem.title}
                         </h2>
-                        <Link to={bookItem.url} className="book-item-list__url">
-                            URL: {bookItem.url}
-                        </Link>
                         <p className="book-item-list__reviewer">
                             Reviewer: {bookItem.reviewer}
                         </p>
                         <p className="book-item-list__detail-label">Review Detail:</p>
                         <p className="book-item-list__detail-text">{bookItem.detail}</p>
                     </Link>
+                    { bookItem.url && typeof bookItem.url === 'string' && (
+                        <p className="booklist__url-container">
+                            <a href={bookItem.url} target="_blank" rel="noopener noreferrer">
+                                URL: {bookItem.url}
+                            </a>
+                        </p>
+                    )}
                 </li>
             ))}
         </ul>
