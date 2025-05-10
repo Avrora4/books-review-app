@@ -58,6 +58,16 @@ export interface EditBookDetailRequest {
   review: string | null;
 }
 
+export interface DeleteBookReviewRequest {
+  id: string;
+}
+
+export interface DeleteBookReviewResponse {
+  message: string;
+}
+
+export type DeleteBookReviewApiResponse = DeleteBookReviewResponse | ErrorResponse;
+
 
 
 // 方定義については、大文字の方が良い

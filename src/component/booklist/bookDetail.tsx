@@ -1,9 +1,9 @@
 import { useState, useEffect, ChangeEvent } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import './bookDetail.scss';
-import { EditBookDetailRequest, GetBookDetailRequest, GetBookDetailResponse } from '../../model/booklist/booklistModels';
-import { getBookDetailAPI, updateBookDetailAPI } from "../../services/booklist/booklistService"
+import { EditBookDetailRequest, GetBookDetailRequest, GetBookDetailResponse, DeleteBookReviewRequest } from '../../model/booklist/booklistModels';
+import { getBookDetailAPI, updateBookDetailAPI, deleteBookReviewAPI } from "../../services/booklist/booklistService"
 
 export const BookDetail = () => {
     const { id } = useParams<{ id: string }>();
@@ -11,10 +11,13 @@ export const BookDetail = () => {
     const [bookDetailEdit, setBookDetailEdit] = useState<EditBookDetailRequest | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [deleteError, setDeleteError] = useState<string | null>(null);
     const [cookies] = useCookies();
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [isUpdating, setIsUpdating] = useState<boolean>(false);
+    const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
     const authToken = cookies.authToken;
 
@@ -49,15 +52,25 @@ export const BookDetail = () => {
         };
 
         getBookDetail();
-    }, [id, authToken]);
+    }, [id, authToken, location.pathname]);
 
     const handleEditClick = () => {
         setIsEditing(true);
+        if(id) {
+            navigate(`/edit/${id}`);
+        } else {
+            console.error("Book ID is missing, cannot navigate to edit URL.");
+        }
     }
     
     const handleCancelClick = () => {
         setIsEditing(false);
         setIsUpdating(false);
+        if(id) {
+            navigate(`/detail/${id}`);
+        } else {
+            console.error("Book ID is missing, cannot navigate to edit URL.");
+        }
     }
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -80,6 +93,36 @@ export const BookDetail = () => {
                 [name]: value
             };
         });
+    }
+
+    const handleDeleteClick = async () => {
+        if (!window.confirm("Delete this books reviews ??")) {
+            return;
+        }
+
+        if(!id) {
+            setDeleteError('Book ID is missing, cannot delete review');
+            return;
+        }
+        setIsDeleting(true);
+        setDeleteError(null);
+
+        try {
+            const deleteBookReviewRequestData: DeleteBookReviewRequest = { id: id };
+        
+            const response = await deleteBookReviewAPI(cookies.authToken, deleteBookReviewRequestData);
+    
+            if (response && typeof response === 'object' && "message" in response) {
+                console.log(`Result: ${response.message}`);
+                } else {
+                    setDeleteError(`Failed to delete book review. Response: ${JSON.stringify(response)}`);
+                }
+        } catch(error) {
+            setDeleteError(`Failed to delete book review. Error: ${error}`);
+        } finally {
+            setIsDeleting(false);
+            navigate('/home');
+        }
     }
 
     const handleUpdateClick = () => {
@@ -128,12 +171,18 @@ export const BookDetail = () => {
     }
 
     if (!bookDetail) {
-       return <div className="book-detail-empty">Book details not found.</div>;
-   }
+       return <div className="book-detail-empty">Book details not found.</div>
+    }
+    
+    if (isDeleting) {
+        return <div className='book-detail-deleting'>Updating book deleting...</div>
+    }
 
    
     return (
         <div>
+        {deleteError && <div className='book-detail-delete-error'>{deleteError}</div>}
+        
         {isEditing ? (
         <div className='book-detail-edit'>
             <div className='book-detail-title-edit'>
@@ -150,13 +199,13 @@ export const BookDetail = () => {
             </div>
             <div className='book-detail-review-edit'>
                 <label htmlFor="review" className='book-detail-label-edit'>Review: </label>
-                <input className='book-detail-review-edit-input' type='textarea' id='review' name='review' value={bookDetailEdit?.review || ''} onChange={handleInputChange} />
+                <textarea className='book-detail-review-edit-input' id='review' name='review' value={bookDetailEdit?.review || ''} onChange={handleInputChange} />
             </div>
             <div>
-                <button onClick={handleUpdateClick} className='book-detail-edit-button'>Update</button>
+                <button onClick={handleUpdateClick} className='book-detail-update-button'>Update</button>
             </div>
             <div>
-                <button onClick={handleCancelClick} className='book-detail-edit-button'>Cancel</button>
+                <button onClick={handleCancelClick} className='book-detail-cancel-button'>Cancel</button>
             </div>
         </div>
         ) : (
@@ -173,7 +222,10 @@ export const BookDetail = () => {
             <p className='book-detail-label'>Author:</p>
             <p className='book-detail-author'>{bookDetail.isMine ? 'Author' : 'Not author'}</p>
             <div>
-                <button onClick={handleEditClick} className='book-detail-edit-button'>Edit</button>
+                <button onClick={handleEditClick} className='book-detail-edit-button' disabled={isEditing}>Edit</button>
+            </div>
+            <div>
+                <button onClick={handleDeleteClick} className='book-detail-edit-button' disabled={isDeleting}>Delete</button>
             </div>
         </>
     )}

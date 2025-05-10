@@ -32,6 +32,7 @@ export const Router = () => {
                 <Route path='/profile' element={auth ? <ProfileEdit /> : <Navigate to='/login' />} />
                 <Route path='/new' element={auth ? <BookReviewPost /> : <Navigate to='/login' />} />
                 <Route path='/detail/:id' element={auth ? <BookDetail /> : <Navigate to='/login' />} />
+                <Route path='/edit/:id' element={auth ? <BookDetail /> : <Navigate to='/login' />} />
             </Routes>
         </BrowserRouter>
     );
