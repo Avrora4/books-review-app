@@ -77,7 +77,7 @@ export const Signup = () => {
     
                      if (userInfo && typeof userInfo === 'object' && "name" in userInfo && userInfo.name) {
                          dispatch(SignIn({ name: userInfo.name, iconUrl: userInfo.iconUrl || null })); // iconUrl は getLoginInfoAPI からの値を使用するのが確実
-    
+
                          console.log("User info fetched after login:", userInfo);
     
                          navigate('/home');

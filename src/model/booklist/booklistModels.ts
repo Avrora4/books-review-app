@@ -50,6 +50,26 @@ export interface GetBookDetailResponse {
 
 export type GetBookDetailApiResponse = GetBookDetailResponse | ErrorResponse;
 
+
+export interface EditBookDetailRequest {
+  title: string | null;
+  url: string | null;
+  detail: string | null;
+  review: string | null;
+}
+
+export interface DeleteBookReviewRequest {
+  id: string;
+}
+
+export interface DeleteBookReviewResponse {
+  message: string;
+}
+
+export type DeleteBookReviewApiResponse = DeleteBookReviewResponse | ErrorResponse;
+
+
+
 // 方定義については、大文字の方が良い
 // ファイル名については、-を使用する方が良いかも、、(git管理の場合)
 // method(関数)レベルでは小文字で問題ない

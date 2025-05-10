@@ -2,7 +2,9 @@ import axios from "axios";
 import { apiUrl } from "../../const";
 import { BooklistResponse, BooklistApiResponse, BooklistRequest,
         BookPostResponse, BookPostApiResponse, BookPostRequest,
-        GetBookDetailResponse, GetBookDetailApiResponse, GetBookDetailRequest
+        GetBookDetailResponse, GetBookDetailApiResponse, GetBookDetailRequest,
+        EditBookDetailRequest,
+        DeleteBookReviewResponse, DeleteBookReviewApiResponse, DeleteBookReviewRequest
     } from "../../model/booklist/booklistModels";
 import { ErrorResponse } from "../../model/errorModel"
 
@@ -54,6 +56,41 @@ export const getBookDetailAPI = async (token: string, GetBookDetailRequestData: 
     });
     if (response.status === 200 ) {
         return response.data as GetBookDetailResponse;
+    } else {
+        return response.data as ErrorResponse;
+    }
+}
+
+export const updateBookDetailAPI = async (token: string, bookId: string, EditBookDetailRequestData: EditBookDetailRequest) : Promise<GetBookDetailApiResponse> => {
+    const response = await axios.put(
+        `${API_BASE_URL}/books/${bookId}`,
+        EditBookDetailRequestData,
+        {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": 'application/json',
+              },
+        }
+    );
+    if (response.status === 200 ) {
+        return response.data as GetBookDetailResponse;
+    } else {
+        return response.data as ErrorResponse;
+    }
+}
+
+export const deleteBookReviewAPI = async (token: string, DeleteBookReviewRequestData: DeleteBookReviewRequest) : Promise<DeleteBookReviewApiResponse> => {
+    const response = await axios.delete(
+        `${API_BASE_URL}/books/${DeleteBookReviewRequestData.id}`,
+        {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": 'application/json',
+              },
+        }
+    );
+    if (response.status === 200 ) {
+        return response.data as DeleteBookReviewResponse
     } else {
         return response.data as ErrorResponse;
     }
